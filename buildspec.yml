@@ -25,5 +25,3 @@ phases:
             - echo "Pushing Docker image to Amazon ECR..."
             - docker push 891377055161.dkr.ecr.ap-southeast-1.amazonaws.com/dva-nodejs-app-demo:latest
             - echo "Build completed successfully!"
-artifacts:
- files: dvanodejs.json
