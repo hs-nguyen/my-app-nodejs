@@ -1,20 +1,27 @@
 version: 0.2
 
+env:
+    variables:
+        AWS_REGION: "ap-southeast-1"
+        ECR_REPOSITORY: "891377055161.dkr.ecr.ap-southeast-1.amazonaws.com/dva-nodejs-app-demo"
+
 phases: 
     install:
         runtime-versions:
-            nodejs: latest
+            docker: 20
         commands:
-            - echo "installing something"
+            - echo "Build images to ECR"
     pre_build:
-        commands: 
-            - echo "we are in the pre build phase"
+        commands:
+            - echo "Logging into Amazon ECR..."
+            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
     build:
         commands:
-            - echo "we are in the build block"
-            - echo "we will run some tests"
-            - grep -Fq "Hello World" index.html
+            - echo "Building Docker image..."
+            - docker build -t dva-nodejs-app-demo .
+            - docker tag dva-nodejs-app-demo:latest $ECR_REPOSITORY:latest
     post_build:
         commands:
-            - echo "we are in the post build phase"
-            
+            - echo "Pushing Docker image to Amazon ECR..."
+            - docker push $ECR_REPOSITORY:latest
+            - echo "Build completed successfully!"
