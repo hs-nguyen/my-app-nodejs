@@ -19,9 +19,15 @@ phases:
         commands:
             - echo "Building Docker image..."
             - docker build -t dva-nodejs-app-demo .
-            - docker tag dva-nodejs-app-demo:latest 891377055161.dkr.ecr.ap-southeast-1.amazonaws.com/dva-nodejs-app-demo:latest
+            - docker tag dva-nodejs-app-demo:latest $ECR_REPOSITORY:latest
+            - docker tag dva-nodejs-app-demo:latest $$REPOSITORY_URI:$COMMIT_HASH
     post_build:
         commands:
             - echo "Pushing Docker image to Amazon ECR..."
-            - docker push 891377055161.dkr.ecr.ap-southeast-1.amazonaws.com/dva-nodejs-app-demo:latest
+            - docker push $ECR_REPOSITORY:latest
+            - printf '[{"name":"nodejs-container","imageUri":"%s"}]'
+              $REPOSITORY_URI:$COMMIT_HASH > imagedefinitions.json
             - echo "Build completed successfully!"
+            - cat imagedefinitions.json
+artifacts:
+ files: imagedefinitions.json
