@@ -14,14 +14,14 @@ phases:
     pre_build:
         commands:
             - echo "Logging into Amazon ECR..."
-            - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPOSITORY
+            - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 891377055161.dkr.ecr.ap-southeast-1.amazonaws.com
     build:
         commands:
             - echo "Building Docker image..."
             - docker build -t dva-nodejs-app-demo .
-            - docker tag dva-nodejs-app-demo:latest $ECR_REPOSITORY:latest
+            - docker tag dva-nodejs-app-demo:latest 891377055161.dkr.ecr.ap-southeast-1.amazonaws.com/dva-nodejs-app-demo:latest
     post_build:
         commands:
             - echo "Pushing Docker image to Amazon ECR..."
-            - docker push $ECR_REPOSITORY:latest
+            - docker push 891377055161.dkr.ecr.ap-southeast-1.amazonaws.com/dva-nodejs-app-demo:latest
             - echo "Build completed successfully!"
