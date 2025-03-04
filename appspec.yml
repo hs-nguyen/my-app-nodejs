@@ -1,0 +1,10 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:ap-southeast-1:891377055161:task-definition/dev-nodejs-app-task:3"
+        LoadBalancerInfo:
+            ContainerName: "dva-nodejs-app-container"
+            ContainerPort: 80
+        PlatformVersion: "LATEST"
