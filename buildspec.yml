@@ -29,4 +29,6 @@ phases:
             - echo "Build completed successfully!"
             - cat imagedefinitions.json
 artifacts:
- files: imagedefinitions.json
+ files: 
+ - imagedefinitions.json
+ - appspec.yml
